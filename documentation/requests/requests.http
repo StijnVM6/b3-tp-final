@@ -18,7 +18,7 @@ GET http://localhost:1992/instruments
 GET http://localhost:1992/instruments/1
 
 ###
-PUT http://localhost:1992/instruments/1
+PUT http://localhost:1992/instruments/2
 Content-Type: application/json
 
 {
@@ -29,7 +29,7 @@ Content-Type: application/json
 }
  
 ###
-DELETE  http://localhost:1992/instruments/1
+DELETE  http://localhost:1992/instruments/3
 
 
 
@@ -92,3 +92,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhd
     "color": "silver",
     "price": 99.9
 }
+
+###
+POST http://localhost:1992/reparations
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczODg0OTUxN30.Ogfg-wpgT3g34JNjzM3qh_5L1M-rtQm4-u_feqKhwTA
+Content-Type: application/json
+
+{
+    "name": "terrible sound",
+    "price": 55,
+    "instrumentId": 5
+}
+
+###
+DELETE http://localhost:1992/reparations/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczODg0OTUxN30.Ogfg-wpgT3g34JNjzM3qh_5L1M-rtQm4-u_feqKhwTA
+

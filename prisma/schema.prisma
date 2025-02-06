@@ -15,11 +15,20 @@ datasource db {
 }
 
 model Instrument {
-  id     Int     @id @default(autoincrement())
-  name   String
-  weight Decimal
-  color  String
-  price  Decimal
+  id         Int          @id @default(autoincrement())
+  name       String
+  weight     Decimal
+  color      String
+  price      Decimal
+  Reparation Reparation[]
+}
+
+model Reparation {
+  id           Int        @id @default(autoincrement())
+  name         String
+  price        Decimal
+  instrumentId Int        @unique
+  instrument   Instrument @relation(fields: [instrumentId], references: [id])
 }
 
 model User {

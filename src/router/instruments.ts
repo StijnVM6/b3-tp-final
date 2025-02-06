@@ -8,7 +8,12 @@ instrumentsRouter.get("/", async (req, res) => {
 	try {
 		const prisma = new PrismaClient();
 		const instruments = await prisma.instrument.findMany();
-		res.json(instruments).status(200);
+
+		if (instruments.length === 0) {
+			return res.status(404).json({ error: "No instruments found." });
+		} else {
+			res.status(200).json(instruments);
+		}
 	} catch (error) {
 		console.error("Error fetching instruments:", error);
 		res.status(404).json({ error: "Failed to fetch instruments." });
@@ -22,10 +27,16 @@ instrumentsRouter.get("/:id", async (req, res) => {
 		const instrument = await prisma.instrument.findUnique({
 			where: { id: parseInt(id) },
 		});
-		res.json({
-			message: `instrument with id: ${id} found.`,
-			instrument,
-		}).status(200);
+		if (!instrument) {
+			return res
+				.status(404)
+				.json({ error: `No instrument with id: ${id} found.` });
+		} else {
+			res.status(200).json({
+				message: `instrument with id: ${id} found.`,
+				instrument,
+			});
+		}
 	} catch (error) {
 		console.error(`Error fetching instrument with id: ${id}`, error);
 		res.status(404).json({
@@ -68,7 +79,13 @@ instrumentsRouter.put("/:id", async (req, res) => {
 				price: price,
 			},
 		});
-		res.status(200).json({ message: "instrument updated" });
+		if (instrument.count === 0) {
+			return res
+				.status(404)
+				.json({ error: `No instrument with id: ${id} found.` });
+		} else {
+			res.status(200).json({ message: "instrument updated" });
+		}
 	} catch (error) {
 		console.error(`Error updating instrument with id: ${id}`, error);
 		res.status(500).json({
@@ -84,10 +101,18 @@ instrumentsRouter.delete("/:id", async (req, res) => {
 		const instrument = await prisma.instrument.deleteMany({
 			where: { id: parseInt(id) },
 		});
-		res.status(200).json({
-			message: `instrument with id ${id} deleted.`,
-			data: instrument,
-		});
+
+		if (instrument.count === 0) {
+			return res.status(404).json({
+				error: `No instrument with id: ${id} found.`,
+				instrument,
+			});
+		} else {
+			res.status(200).json({
+				message: `instrument with id ${id} deleted.`,
+				data: instrument,
+			});
+		}
 	} catch (error) {
 		console.error(`Error deleting instrument with id: ${id}`, error);
 		res.status(500).json({

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
+import e from "cors";
 
 export const usersRouter = Router();
 
@@ -8,7 +9,11 @@ usersRouter.get("/", async (req, res) => {
 	try {
 		const prisma = new PrismaClient();
 		const users = await prisma.user.findMany();
-		res.json(users).status(200);
+		if (users.length === 0) {
+			return res.status(404).json({ error: "No users found." });
+		} else {
+			res.status(200).json(users);
+		}
 	} catch (error) {
 		console.error("Error fetching users:", error);
 		res.status(404).json({ error: "Failed to fetch users." });
@@ -22,7 +27,16 @@ usersRouter.get("/:id", async (req, res) => {
 		const user = await prisma.user.findUnique({
 			where: { id: parseInt(id) },
 		});
-		res.json({ message: `User with id: ${id} found.`, user }).status(200);
+		if (!user) {
+			return res.status(404).json({
+				error: `User with id: ${id} not found.`,
+			});
+		} else {
+			res.status(200).json({
+				message: `User with id: ${id} found.`,
+				user,
+			});
+		}
 	} catch (error) {
 		console.error(`Error fetching user with id: ${id}`, error);
 		res.status(404).json({
@@ -64,7 +78,14 @@ usersRouter.put("/:id", async (req, res) => {
 				password: password,
 			},
 		});
-		res.status(200).json({ message: "User updated" });
+		if (user.count === 0) {
+			return res.status(404).json({
+				error: `No user with id: ${id} found.`,
+				user,
+			});
+		} else {
+			res.status(200).json({ message: "User updated" });
+		}
 	} catch (error) {
 		console.error(`Error updating user with id: ${id}`, error);
 		res.status(500).json({
@@ -80,10 +101,17 @@ usersRouter.delete("/:id", async (req, res) => {
 		const user = await prisma.user.deleteMany({
 			where: { id: parseInt(id) },
 		});
-		res.status(200).json({
-			message: `User with id ${id} deleted.`,
-			data: user,
-		});
+		if (user.count === 0) {
+			return res.status(404).json({
+				error: `No user with id: ${id} found.`,
+				user,
+			});
+		} else {
+			res.status(200).json({
+				message: `User with id ${id} deleted.`,
+				data: user,
+			});
+		}
 	} catch (error) {
 		console.error(`Error deleting user with id: ${id}`, error);
 		res.status(500).json({
