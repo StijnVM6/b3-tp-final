@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
+import { authJwtMiddleware } from "../middleware/authJwtMiddleware";
 
 export const instrumentsRouter = Router();
 
@@ -33,7 +34,7 @@ instrumentsRouter.get("/:id", async (req, res) => {
 	}
 });
 
-instrumentsRouter.post("/", async (req, res) => {
+instrumentsRouter.post("/", authJwtMiddleware, async (req, res) => {
 	const { name, weight, color, price } = req.body;
 	try {
 		const prisma = new PrismaClient();
@@ -67,10 +68,7 @@ instrumentsRouter.put("/:id", async (req, res) => {
 				price: price,
 			},
 		});
-		res.status(200).json({
-			message: "instrument updated",
-			instrument,
-		});
+		res.status(200).json({ message: "instrument updated" });
 	} catch (error) {
 		console.error(`Error updating instrument with id: ${id}`, error);
 		res.status(500).json({

@@ -34,9 +34,7 @@ loginRouter.post("/", async (req, res) => {
 				message: `Incorrect login credentials.`,
 			});
 		} else {
-			res.status(200)
-				.json({ message: "Login successful." })
-				.json(tokenObject);
+			res.status(200).json({ message: "Login successful.", tokenObject });
 		}
 	} catch (err) {
 		res.status(500).json({ message: `Error logging in: ${err}` });

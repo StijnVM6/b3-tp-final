@@ -64,7 +64,7 @@ usersRouter.put("/:id", async (req, res) => {
 				password: password,
 			},
 		});
-		res.status(200).json({ message: "User updated", data: user });
+		res.status(200).json({ message: "User updated" });
 	} catch (error) {
 		console.error(`Error updating user with id: ${id}`, error);
 		res.status(500).json({

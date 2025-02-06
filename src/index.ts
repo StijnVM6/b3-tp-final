@@ -5,6 +5,7 @@ import express from "express";
 // importing routers
 import { instrumentsRouter } from "./router/instruments";
 import { usersRouter } from "./router/users";
+import { loginRouter } from "./router/login";
 
 // CREATE EXPRESS APP
 const app = express();
@@ -18,6 +19,7 @@ const router = express.Router();
 app.use("", router);
 app.use("/instruments", instrumentsRouter);
 app.use("/users", usersRouter);
+app.use("/login", loginRouter);
 
 app.use("/bananas/", (req, res) => {
 	const color = req.query.couleur;

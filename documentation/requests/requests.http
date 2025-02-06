@@ -42,3 +42,53 @@ GET  http://localhost:1992/bananas?couleur=jaune
 GET  http://localhost:1992/bananas
 ###
 GET  http://localhost:1992/bananas?couleur=purple
+
+
+
+###
+GET http://localhost:1992/users/
+
+###
+POST http://localhost:1992/users
+Content-Type: application/json
+
+{
+    "username": "john_doe",
+    "password": "mypassword123"
+}
+
+###
+GET http://localhost:1992/users/1
+
+###
+PUT http://localhost:1992/users/1
+Content-Type: application/json
+
+{
+    "username": "gandalf_theGrey",
+    "password": "youshallnotpass"
+}
+
+###
+DELETE http://localhost:1992/users/1
+
+###
+POST http://localhost:1992/login
+Content-Type: application/json
+
+{
+    "username": "john_doe",
+    "password": "mypassword123"
+}
+
+###
+POST http://localhost:1992/instruments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczODg0OTUxN30.Ogfg-wpgT3g34JNjzM3qh_5L1M-rtQm4-u_feqKhwTA
+
+{
+    "name": "protected flute",
+    "weight": 2.2,
+    "color": "silver",
+    "price": 99.9
+}
