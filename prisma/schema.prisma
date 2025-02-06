@@ -15,12 +15,12 @@ datasource db {
 }
 
 model Instrument {
-  id         Int          @id @default(autoincrement())
-  name       String
-  weight     Decimal
-  color      String
-  price      Decimal
-  Reparation Reparation[]
+  id          Int          @id @default(autoincrement())
+  name        String
+  weight      Decimal
+  color       String
+  price       Decimal
+  reparations Reparation[]
 }
 
 model Reparation {

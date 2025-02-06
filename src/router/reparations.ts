@@ -47,14 +47,3 @@ reparationsRouter.delete("/:id", authJwtMiddleware, async (req, res) => {
 		});
 	}
 });
-
-reparationsRouter.get("/", async (req, res) => {
-	try {
-		const prisma = new PrismaClient();
-		const reparations = await prisma.reparation.findMany();
-		res.status(200).json(reparations);
-	} catch (error) {
-		console.error("Error fetching reparations:", error);
-		res.status(404).json({ error: "Failed to fetch reparations." });
-	}
-});

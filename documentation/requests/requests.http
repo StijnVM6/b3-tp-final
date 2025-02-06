@@ -3,6 +3,7 @@ GET http://localhost:1992/bananas?couleur=jaune
 ###
 POST http://localhost:1992/instruments
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczODg0OTUxN30.Ogfg-wpgT3g34JNjzM3qh_5L1M-rtQm4-u_feqKhwTA
 
 {
     "name": "magic flute",
@@ -18,7 +19,7 @@ GET http://localhost:1992/instruments
 GET http://localhost:1992/instruments/1
 
 ###
-PUT http://localhost:1992/instruments/2
+PUT http://localhost:1992/instruments/1
 Content-Type: application/json
 
 {
@@ -101,10 +102,10 @@ Content-Type: application/json
 {
     "name": "terrible sound",
     "price": 55,
-    "instrumentId": 5
+    "instrumentId": 6
 }
 
 ###
-DELETE http://localhost:1992/reparations/3
+DELETE http://localhost:1992/reparations/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczODg0OTUxN30.Ogfg-wpgT3g34JNjzM3qh_5L1M-rtQm4-u_feqKhwTA
 
