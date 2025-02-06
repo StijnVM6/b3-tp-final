@@ -1,0 +1,44 @@
+GET http://localhost:1992/bananas?couleur=jaune
+
+###
+POST http://localhost:1992/instruments
+Content-Type: application/json
+
+{
+    "name": "magic flute",
+    "weight": 1.2,
+    "color": "gold",
+    "price": 999.99
+}
+
+###
+GET http://localhost:1992/instruments
+
+###
+GET http://localhost:1992/instruments/1
+
+###
+PUT http://localhost:1992/instruments/1
+Content-Type: application/json
+
+{
+    "name": "normal flute",
+    "weight": 2.1,
+    "color": "brown",
+    "price": 9.99
+}
+ 
+###
+DELETE  http://localhost:1992/instruments/1
+
+
+
+
+
+###
+GET  http://localhost:1992/bananas?couleur=jaune
+
+###
+GET  http://localhost:1992/bananas
+###
+GET  http://localhost:1992/bananas?couleur=purple

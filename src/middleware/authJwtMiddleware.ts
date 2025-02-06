@@ -30,15 +30,7 @@ export const authJwtMiddleware = (
 				message: `You are not authorized. Invalid token.`,
 			});
 		} else {
-			const payload = decoded as jwt.JwtPayload;
-			const role = payload.userRole;
-			if (role != "ADMIN") {
-				return res.status(401).json({
-					message: `You are not authorized as GUEST. This action requires ADMIN rights.`,
-				});
-			} else {
-				next();
-			}
+			next();
 		}
 	});
 };

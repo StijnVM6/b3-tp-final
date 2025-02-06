@@ -1,11 +1,14 @@
 import { Router } from "express";
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 export const usersRouter = Router();
 
 usersRouter.get("/", async (req, res) => {
 	try {
-		const users = await getUsers();
-		res.json(users);
+		const prisma = new PrismaClient();
+		const users = await prisma.user.findMany();
+		res.json(users).status(200);
 	} catch (error) {
 		console.error("Error fetching users:", error);
 		res.status(404).json({ error: "Failed to fetch users." });
@@ -15,8 +18,11 @@ usersRouter.get("/", async (req, res) => {
 usersRouter.get("/:id", async (req, res) => {
 	const id = req.params.id;
 	try {
-		const user = await getUserById(id);
-		res.json({ message: `User with id: ${id} found.`, user });
+		const prisma = new PrismaClient();
+		const user = await prisma.user.findUnique({
+			where: { id: parseInt(id) },
+		});
+		res.json({ message: `User with id: ${id} found.`, user }).status(200);
 	} catch (error) {
 		console.error(`Error fetching user with id: ${id}`, error);
 		res.status(404).json({
@@ -26,9 +32,19 @@ usersRouter.get("/:id", async (req, res) => {
 });
 
 usersRouter.post("/", async (req, res) => {
-	const { username, password, role } = req.body;
+	const { username, password } = req.body;
 	try {
-		const user = await createUsers(username, password, role);
+		const prisma = new PrismaClient();
+
+		const saltRounds = parseInt(process.env.SALT_ROUNDS!);
+		const hash = await bcrypt.hash(password, saltRounds);
+
+		const user = await prisma.user.create({
+			data: {
+				username: username,
+				password: hash,
+			},
+		});
 		res.status(201).json(user);
 	} catch (error) {
 		console.error("Error creating user:", error);
@@ -38,9 +54,16 @@ usersRouter.post("/", async (req, res) => {
 
 usersRouter.put("/:id", async (req, res) => {
 	const id = req.params.id;
-	const { username, password, role } = req.body;
+	const { username, password } = req.body;
 	try {
-		const user = await updateUser(id, username, password, role);
+		const prisma = new PrismaClient();
+		const user = await prisma.user.updateMany({
+			where: { id: parseInt(id) },
+			data: {
+				username: username,
+				password: password,
+			},
+		});
 		res.status(200).json({ message: "User updated", data: user });
 	} catch (error) {
 		console.error(`Error updating user with id: ${id}`, error);
@@ -53,7 +76,10 @@ usersRouter.put("/:id", async (req, res) => {
 usersRouter.delete("/:id", async (req, res) => {
 	const id = req.params.id;
 	try {
-		const user = await deleteUserById(id);
+		const prisma = new PrismaClient();
+		const user = await prisma.user.deleteMany({
+			where: { id: parseInt(id) },
+		});
 		res.status(200).json({
 			message: `User with id ${id} deleted.`,
 			data: user,

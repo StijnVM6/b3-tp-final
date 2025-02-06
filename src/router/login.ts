@@ -26,10 +26,7 @@ loginRouter.post("/", async (req, res) => {
 				.json({ message: `Incorrect login credentials.` });
 
 		const secretKey = process.env.JWT_SECRET!;
-		const token = jwt.sign(
-			{ userId: user.id, userRole: user.role },
-			secretKey
-		);
+		const token = jwt.sign({ userId: user.id }, secretKey);
 		const tokenObject = { token: token };
 
 		if (!token) {
@@ -37,7 +34,9 @@ loginRouter.post("/", async (req, res) => {
 				message: `Incorrect login credentials.`,
 			});
 		} else {
-			res.status(200).json(tokenObject);
+			res.status(200)
+				.json({ message: "Login successful." })
+				.json(tokenObject);
 		}
 	} catch (err) {
 		res.status(500).json({ message: `Error logging in: ${err}` });
